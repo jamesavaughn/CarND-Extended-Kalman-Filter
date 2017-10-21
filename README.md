@@ -25,16 +25,58 @@ Code must compile without errors with `cmake` and `make`.
 Your px, py, vx, and vy RMSE should be less than or equal to the values [.11, .11, 0.52, 0.52]
 
 ## Rubric 3 Follows the Correct Algorithm
-### Criteria: Meets Specifications
+### Criteria 3.1: Meets Specifications
 Your Sensor Fusion algorithm follows the general processing flow as taught in the preceding lessons.
 
-** Algorithem Flow
+### Algorithem Flow
 
 1. Initialize Covariance and State Matrix
 2. Prediction Step
 3. Measurement Update Step (y = z - Hx')
-3a. Set up Laser Matrixes
-3b. Set up Radar Matrixes (convert space: calculate Jacobian Matrix using rho, phi, rho_dot)
+4. Calculate New Object State (x = x' + ky)
+
+* Set up Laser Matrixes
+* Set up Radar Matrixes (convert space: calculate Jacobian Matrix using rho, phi, rho_dot)
+
+### Criteria 3.2: Initialize State and Covariance Matrices
+`/**
+    // first measurement
+    cout << "EKF: " << endl;
+    ekf_.x_ = VectorXd(4);
+    ekf_.x_ << 1, 1, 1, 1;
+
+    if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+      /**
+      Convert radar from polar to cartesian coordinates and initialize state.
+      */
+      float ro = measurement_pack.raw_measurements_(0);
+      float phi = measurement_pack.raw_measurements_(1);
+      float ro_dot = measurement_pack.raw_measurements_(2);
+
+      ekf_.x_(0) = ro * cos(phi);
+      ekf_.x_(1) = ro * sin(phi);
+      ekf_.x_(2) = ro_dot * cos(phi);
+      ekf_.x_(3) = ro_dot * sin(phi);
+
+    }
+    else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+      /**
+      Initialize state.
+      */
+      ekf_.x_(0) = measurement_pack.raw_measurements_(0);
+      ekf_.x_(1) = measurement_pack.raw_measurements_(1);
+    }
+
+    // done initializing, no need to predict or update
+    is_initialized_ = true;
+    return;
+  }`
+
+
+### Criteria 3.3: Predict Object Position to Current timestep and update prediction
+
+
+### Criteria 3.4: Set up the appropriate matrices given the type of measurement and calls correct measurement function for a given sensor type
 
 
 # Extended Kalman Filter Project Starter Code
