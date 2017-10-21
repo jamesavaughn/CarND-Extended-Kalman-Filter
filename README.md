@@ -74,26 +74,26 @@ Your Sensor Fusion algorithm follows the general processing flow as taught in th
 
 ### Criteria 3.3: Predict Object Position to Current timestep and update prediction
 
-//compute time delta w/ dt in seconds
+#### compute time delta w/ dt in seconds
 
-`   float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
+   float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
    previous_timestamp_ = measurement_pack.timestamp_;
 
    float dt_2 = dt * dt;
    float dt_3 = dt_2 * dt;
    float dt_4 = dt_3 * dt;
 
-   //integrate time into F matrix
+#### integrate time into F matrix
   
   ` ekf_.F_(0,2) = dt;
    ekf_.F_(1,3) = dt;
 
-   //set acceleration noise
+#### set acceleration noise
   
    `float noise_ax = 9;
    float noise_ay = 9;
 
-   //set Q, process covariance variance matrix
+#### set Q, process covariance variance matrix
   
    `ekf_.Q_ = MatrixXd(4,4);
    ekf_.Q_ << dt_4 / 4 * noise_ax, 0, dt_3 / 2 * noise_ax, 0,
