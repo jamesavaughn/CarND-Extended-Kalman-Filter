@@ -40,7 +40,7 @@ Your Sensor Fusion algorithm follows the general processing flow as taught in th
 
 ### Criteria 3.2: Initialize State and Covariance Matrices
 #### first measurement
-`/**
+`
     cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
     ekf_.x_ << 1, 1, 1, 1;
@@ -70,7 +70,6 @@ Your Sensor Fusion algorithm follows the general processing flow as taught in th
     // done initializing, no need to predict or update
     is_initialized_ = true;
     return;
-}`
 
 
 ### Criteria 3.3: Predict Object Position to Current timestep and update prediction
