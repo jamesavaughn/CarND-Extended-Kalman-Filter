@@ -14,7 +14,27 @@ Clone the GitHub repository and run in the master directory
 -- will return 
 Listening to port 4567
 Connected!!!
+* Step 5: 
 
+## Rubric 1 Compiling
+### Criteria: Your code should compile.
+Code must compile without errors with `cmake` and `make`.
+
+## Rubric 2 Accuracy
+### Criteria: Meets Specifications
+Your px, py, vx, and vy RMSE should be less than or equal to the values [.11, .11, 0.52, 0.52]
+
+## Rubric 3 Follows the Correct Algorithm
+### Criteria: Meets Specifications
+Your Sensor Fusion algorithm follows the general processing flow as taught in the preceding lessons.
+
+** Algorithem Flow
+
+1. Initialize Covariance and State Matrix
+2. Prediction Step
+3. Measurement Update Step (y = z - Hx')
+3a. Set up Laser Matrixes
+3b. Set up Radar Matrixes (convert space: calculate Jacobian Matrix using rho, phi, rho_dot)
 
 
 # Extended Kalman Filter Project Starter Code
