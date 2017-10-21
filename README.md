@@ -40,7 +40,7 @@ Your Sensor Fusion algorithm follows the general processing flow as taught in th
 
 ### Criteria 3.2: Initialize State and Covariance Matrices
 #### first measurement
-`
+```
     cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
     ekf_.x_ << 1, 1, 1, 1;
@@ -70,7 +70,7 @@ Your Sensor Fusion algorithm follows the general processing flow as taught in th
     // done initializing, no need to predict or update
     is_initialized_ = true;
     return;
-
+```
 
 ### Criteria 3.3: Predict Object Position to Current timestep and update prediction
 
@@ -107,6 +107,7 @@ Your Sensor Fusion algorithm follows the general processing flow as taught in th
 ### Criteria 3.4: Set up the appropriate matrices given the type of measurement and calls correct measurement function for a given sensor type
 
   `if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+    
     // Radar updates
     Tools tools; 
     Hj_ = tools.CalculateJacobian(ekf_.x_);
@@ -114,6 +115,7 @@ Your Sensor Fusion algorithm follows the general processing flow as taught in th
     ekf_.R_ = R_radar_;
     ekf_.UpdateEKF(measurement_pack.raw_measurements_);
   } else {
+    
     // Laser updates
     ekf_.H_ = H_laser_;
     ekf_.R_ = R_laser_;
