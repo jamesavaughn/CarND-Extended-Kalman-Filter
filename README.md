@@ -85,27 +85,40 @@ Your Sensor Fusion algorithm follows the general processing flow as taught in th
 
 #### integrate time into F matrix
   
-  ` ekf_.F_(0,2) = dt;
+   ekf_.F_(0,2) = dt;
    ekf_.F_(1,3) = dt;
 
 #### set acceleration noise
   
-   `float noise_ax = 9;
+   float noise_ax = 9;
    float noise_ay = 9;
 
 #### set Q, process covariance variance matrix
   
-   `ekf_.Q_ = MatrixXd(4,4);
+   ekf_.Q_ = MatrixXd(4,4);
    ekf_.Q_ << dt_4 / 4 * noise_ax, 0, dt_3 / 2 * noise_ax, 0,
               0, dt_4 / 4 * noise_ay, 0, dt_3 / 2 * noise_ay,
               dt_3 / 2 * noise_ax, 0, dt_2 * noise_ax, 0,
               0, dt_3 / 2 * noise_ay, 0, dt_2 * noise_ay;
 
 
- ` ekf_.Predict();
+  ekf_.Predict();
 
 ### Criteria 3.4: Set up the appropriate matrices given the type of measurement and calls correct measurement function for a given sensor type
 
+  `if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+    // Radar updates
+    Tools tools; 
+    Hj_ = tools.CalculateJacobian(ekf_.x_);
+    ekf_.H_ = Hj_;
+    ekf_.R_ = R_radar_;
+    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+  } else {
+    // Laser updates
+    ekf_.H_ = H_laser_;
+    ekf_.R_ = R_laser_;
+    ekf_.Update(measurement_pack.raw_measurements_);
+  }`
 
 # Extended Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
