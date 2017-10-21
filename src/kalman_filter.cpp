@@ -63,9 +63,22 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   } else {
     rho_dot = (x_(0) * x_(2) + x_(1) * x_(3)) / rho;
   }
+  //create a function for predictions
   VectorXd z_pred(3);
   z_pred << rho, phi, rho_dot;
+  
+  //y error vector (actual values - estimations)
   VectorXd y = z - z_pred;
+  
+  //normailze the angles so y[1] always stays between -Pi and + Pi
+  while (y[1] > M_PI){
+    y[1] -= (2 * M_PI);
+  }
+  while (y[1] < -M_PI){
+    y[1] += (2 * M_PI);
+  }
+  
+  //calculate matices
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
