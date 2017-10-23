@@ -35,12 +35,13 @@ void KalmanFilter::Update(const VectorXd &z) {
   TODO:
     * update the state by using Kalman Filter equations
   */
+  
   VectorXd z_pred = H_ * x_;
   VectorXd y = z - z_pred;
   MatrixXd Ht = H_.transpose();
-  MatrixXd S = H_ * P_ * Ht + R_;
-  MatrixXd Si = S.inverse();
   MatrixXd PHt = P_ * Ht;
+  MatrixXd S = H_ * PHt + R_;
+  MatrixXd Si = S.inverse();
   MatrixXd K = PHt * Si;
 
   //new update estimate
@@ -79,10 +80,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   }
   
   //calculate matices
-  MatrixXd Ht = H_.transpose();
-  MatrixXd S = H_ * P_ * Ht + R_;
-  MatrixXd Si = S.inverse();
   MatrixXd PHt = P_ * Ht;
+  MatrixXd Ht = H_.transpose();
+  MatrixXd S = H_ * PHt + R_;
+  MatrixXd Si = S.inverse();
   MatrixXd K = PHt * Si;
 
   // new estimate
